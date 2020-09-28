@@ -22,6 +22,13 @@ body {
     margin-left: 10px;
 }
 
+/*#5*/
+div {
+    margin-bottom: 50px;
+}
+
+
+
 /* --- pre-existing css --- */
 .stripey tr:nth-child(even) {
     background-color: gray;
