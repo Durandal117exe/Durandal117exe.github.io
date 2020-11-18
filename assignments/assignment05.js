@@ -84,101 +84,103 @@ var chartData = {
 // code below modified from: 
 // https://www.w3schools.com/js/js_ajax_intro.asp
 
-
+//loadContent has been reworked to act inline with step 5. For reasons unknown to me it requires hitting the
+//button twice before the content loads but otherwise works as intended. #5
 function loadContent() {
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4
-            && this.status == 200) {
+    //xhttp = new XMLHttpRequest();
+    //xhttp.onreadystatechange = function () {
+    //  if (this.readyState == 4
+    //    && this.status == 200) {
+    contentPer();
 
-            covidJson = this.responseText;
-            covidJsObj = JSON.parse(covidJson);
-            newConfirmedOver1000 = [];
-            totalArray = [];
+    //covidJson = this.responseText;
+    covidJsObj = JSON.parse(localStorage);
+    newConfirmedOver1000 = [];
+    totalArray = [];
 
-            for (let c of covidJsObj.Countries) {
-                if (c.NewConfirmed > 10000) {
-                    newConfirmedOver1000.push({
-                        "Slug": c.Slug,
-                        "NewConfirmed": c.NewConfirmed,
-                        "NewDeaths": c.NewDeaths,
-                        "Populations": populations[c.Slug],//#2
+    for (let c of covidJsObj.Countries) {
+        if (c.NewConfirmed > 10000) {
+            newConfirmedOver1000.push({
+                "Slug": c.Slug,
+                "NewConfirmed": c.NewConfirmed,
+                "NewDeaths": c.NewDeaths,
+                "Populations": populations[c.Slug],//#2
 
-                    });
-                } if (c.TotalDeaths > 50000) {
-                    totalArray.push({
-                        "Slug": c.Slug,
-                        "TotalConfirmed": c.TotalConfirmed,
-                        "TotalDeaths": c.TotalDeaths,
-                        "Population": populations[c.Slug],
-                        "TotalConfirmedPer100000": c.TotalConfirmed / (populations[c.Slug] / 100000)
+            });
+        } if (c.TotalDeaths > 50000) {
+            totalArray.push({
+                "Slug": c.Slug,
+                "TotalConfirmed": c.TotalConfirmed,
+                "TotalDeaths": c.TotalDeaths,
+                "Population": populations[c.Slug],
+                "TotalConfirmedPer100000": c.TotalConfirmed / (populations[c.Slug] / 100000)
 
-                    });
-                }
+            });
+        }
 
-                // if (c.TotalDeaths > 50000){
-                //     totalConfirmedPer100000.push({
-                //         "Slug": c.Slug,
-                //         "ConfirmedPer100000": c.TotalConfirmed / (c.Populations / 100000)
-                //     });
+        // if (c.TotalDeaths > 50000){
+        //     totalConfirmedPer100000.push({
+        //         "Slug": c.Slug,
+        //         "ConfirmedPer100000": c.TotalConfirmed / (c.Populations / 100000)
+        //     });
 
-                // }
-            }
-            newConfirmedOver1000 = _.orderBy(newConfirmedOver1000, "NewDeaths", "desc");
-            totalArray = _.orderBy(totalArray, "TotalConfirmedPer100000", "desc"); //#3
+        // }
+    }
+    newConfirmedOver1000 = _.orderBy(newConfirmedOver1000, "NewDeaths", "desc");
+    totalArray = _.orderBy(totalArray, "TotalConfirmedPer100000", "desc"); //#3
 
-            chartData.data.datasets[0].backgroundColor
-                = "rgba(100,100,100,0.4)"; // gray
-            chartData.data.datasets[1].backgroundColor
-                = "rgba(255,0,0,0.4)"; // red
-            chartData.data.datasets[2].backgroundColor
-                = "rgba(0,0,255,0.4)"; // blue
-            chartData.data.datasets[0].label
-                = 'new cases';
-            chartData.data.datasets[1].label
-                = 'new deaths';
-            chartData.data.datasets[2].label
-                = 'total confirmed per 100,000';
+    chartData.data.datasets[0].backgroundColor
+        = "rgba(100,100,100,0.4)"; // gray
+    chartData.data.datasets[1].backgroundColor
+        = "rgba(255,0,0,0.4)"; // red
+    chartData.data.datasets[2].backgroundColor
+        = "rgba(0,0,255,0.4)"; // blue
+    chartData.data.datasets[0].label
+        = 'new cases';
+    chartData.data.datasets[1].label
+        = 'new deaths';
+    chartData.data.datasets[2].label
+        = 'total confirmed per 100,000';
 
-            chartData.data.labels
-                = newConfirmedOver1000.map((x) => x.Slug);
+    chartData.data.labels
+        = newConfirmedOver1000.map((x) => x.Slug);
 
-            chartData.data.datasets[0].data
-                = newConfirmedOver1000.map(
-                    (x) => x.NewConfirmed);
-            chartData.data.datasets[1].data
-                = newConfirmedOver1000.map(
-                    (x) => x.NewDeaths);
+    chartData.data.datasets[0].data
+        = newConfirmedOver1000.map(
+            (x) => x.NewConfirmed);
+    chartData.data.datasets[1].data
+        = newConfirmedOver1000.map(
+            (x) => x.NewDeaths);
 
-            chartData.data.datasets[2].data
-                = totalArray.map((x) => x.TotalConfirmedPer100000);//#4
+    chartData.data.datasets[2].data
+        = totalArray.map((x) => x.TotalConfirmedPer100000);//#4
 
-            chartData.options.title.text
-                = "Covid 19 Hotspots (" +
-                dayjs().format("YYYY-MM-DD") + ")";//#1
-            myChart = new Chart(ctx, chartData);
+    chartData.options.title.text
+        = "Covid 19 Hotspots (" +
+        dayjs().format("YYYY-MM-DD") + ")";//#1
+    myChart = new Chart(ctx, chartData);
 
-        } // end if
+//} // end if
 
-    }; // end xhttp.onreadystatechange = function()
+    //}; // end xhttp.onreadystatechange = function()
 
-    xhttp.open("GET", URL, true);
-    xhttp.send();
+   // xhttp.open("GET", URL, true);
+    //xhttp.send();
 
 } // end function loadContent() 
 
 function contentPer() {
     xhttp2 = new XMLHttpRequest();
     xhttp2.onreadystatechange = function () {
-        
+
         if (this.readyState == 4
             && this.status == 200) {
-                lastTimePull = dayjs();
-                localStorage = this.responseText;
+            lastTimePull = dayjs();
+            localStorage = this.responseText;
 
         }
-    }
-    if(lastTimePull == 0 || dayjs() - lastTimePull  > 86400000){
+    };
+    if (lastTimePull == 0 || dayjs() - lastTimePull > 86400000) {
         xhttp2.open("GET", URL, true);
         xhttp2.send();
     }
