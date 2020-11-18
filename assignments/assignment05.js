@@ -10,11 +10,14 @@ var newConfirmedOver1000;
 
 // AJAX variable
 var xhttp;
+let xhttp2;
 
 // Chart.js variables
 
 // Assignment variables
 var totalArray;
+let localStorage;
+let lastTimePull = 0;
 
 // modified from : https://www.sitepoint.com/introduction-chart-js-2-0-six-examples/
 // "ctx" is the canvas HTML element where the chart is rendered in the browser
@@ -102,16 +105,16 @@ function loadContent() {
                         "Populations": populations[c.Slug],//#2
 
                     });
-                }if(c.TotalDeaths > 50000 ){
-                totalArray.push({
-                    "Slug": c.Slug,
-                    "TotalConfirmed": c.TotalConfirmed,
-                    "TotalDeaths": c.TotalDeaths,
-                    "Population": populations[c.Slug],
-                    "TotalConfirmedPer100000": c.TotalConfirmed / (populations[c.Slug] / 100000)
+                } if (c.TotalDeaths > 50000) {
+                    totalArray.push({
+                        "Slug": c.Slug,
+                        "TotalConfirmed": c.TotalConfirmed,
+                        "TotalDeaths": c.TotalDeaths,
+                        "Population": populations[c.Slug],
+                        "TotalConfirmedPer100000": c.TotalConfirmed / (populations[c.Slug] / 100000)
 
-                });
-            }
+                    });
+                }
 
                 // if (c.TotalDeaths > 50000){
                 //     totalConfirmedPer100000.push({
@@ -163,6 +166,23 @@ function loadContent() {
     xhttp.send();
 
 } // end function loadContent() 
+
+function contentPer() {
+    xhttp2 = new XMLHttpRequest();
+    xhttp2.onreadystatechange = function () {
+        
+        if (this.readyState == 4
+            && this.status == 200) {
+                lastTimePull = dayjs();
+                localStorage = this.responseText;
+
+        }
+    }
+    if(lastTimePull == 0 || dayjs() - lastTimePull  > 86400000){
+        xhttp2.open("GET", URL, true);
+        xhttp2.send();
+    }
+}
 
 // data from: https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 var populations = {
