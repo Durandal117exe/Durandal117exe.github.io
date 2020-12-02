@@ -36,12 +36,12 @@ $(document).ready(function () {
     $("#loan_year0" + i).css("background-color", "white");
     $("#loan_amt0" + i).val(defaultLoanAmount.toFixed(2));
     $("#loan_int0" + i).val(defaultInterestRate);
-   $("#loan_int0" + i).prop("disabled", true);
+    $("#loan_int0" + i).prop("disabled", true);
     $("#loan_int0" + i).css("background-color", "gray");
     $("#loan_int0" + i).css("background-color", "white");
     loanWithInterest = (loanWithInterest + defaultLoanAmount) * (1 + defaultInterestRate);
     $("#loan_bal0" + i).val(toComma(loanWithInterest.toFixed(2)));
-    //this should be the 
+    //this should be the equivalent jquery to the previous javascript but it's not functioning. I have no idea what I'm supposed to be doing here.
   } // end: "for" loop
 
   // all input fields: select contents on fucus
@@ -53,6 +53,10 @@ $(document).ready(function () {
     $(this).css("background-color", "white");
   });
 
+  $("input[type=text]").focus(function (){
+    let input = /[0-9]{0,15}/;//regex pattern should allow all inputs that are numerical
+
+  });
   // set focus to first year: messes up codepen
   // $("#loan_year01").focus();
   $("#loan_year01").blur(function () {
