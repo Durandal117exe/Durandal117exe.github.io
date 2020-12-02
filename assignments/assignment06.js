@@ -12,15 +12,20 @@ var loans = [
   
  // function loadDoc() {
    $(document).ready(function(){ 
+
     // pre-fill defaults for first loan year
     var defaultYear = loans[0].loan_year;
-    document.getElementById("loan_year0" + 1).value = defaultYear++;
+    $("#loan_year0" + 1).val() = defaultYear++;
+    //document.getElementById("loan_year0" + 1).value = defaultYear++;
     var defaultLoanAmount = loans[0].loan_amount;
-    document.getElementById("loan_amt0" + 1).value = defaultLoanAmount.toFixed(2);
+    $("#loan_amt0" + 1).val() = defaultLoanAmount.toFixed(2);
+    //document.getElementById("loan_amt0" + 1).value = defaultLoanAmount.toFixed(2);
     var defaultInterestRate = loans[0].loan_int_rate;
-    document.getElementById("loan_int0" + 1).value = defaultInterestRate;
+    $("#loan_int0" + 1).val() = defaultInterestRate;
+    //document.getElementById("loan_int0" + 1).value = defaultInterestRate;
     var loanWithInterest = loans[0].loan_amount * (1 + loans[0].loan_int_rate);
-    document.getElementById("loan_bal0" + 1).innerHTML = toComma(loanWithInterest.toFixed(2));
+    $("#loan_bal0" + 1).text(toComma(loanWithInterest.toFixed(2)));
+    //document.getElementById("loan_bal0" + 1).innerHTML = toComma(loanWithInterest.toFixed(2));
     
     // pre-fill defaults for other loan years
     for(var i=2; i<6; i++) {
