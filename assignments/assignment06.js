@@ -7,13 +7,17 @@ var loans = [
   { loan_year: 2023, loan_amount: 10000.00, loan_int_rate: 0.0453 },
   { loan_year: 2024, loan_amount: 10000.00, loan_int_rate: 0.0453 }
 ];
+let loansStorage = JSON.stringify(loans);
+localStorage.setItem("loans Array", loanStorage);
 
+//^this should store the loans array to local storage.
 // --- function: loadDoc() ---
 
 // function loadDoc() {
 $(document).ready(function () {
   /*every instance of JS interacting with the html dom has been replaced by jquery  */
-
+  loans = JSON.parse(localStorage.getItem("loans Array"));
+  //this should pull the array from local storage
   // pre-fill defaults for first loan year
   var defaultYear = loans[0].loan_year;
   $("#loan_year0" + 1).val(defaultYear++);//sets the text of the loan year element
@@ -53,9 +57,9 @@ $(document).ready(function () {
     $(this).css("background-color", "white");
   });
 
-  $("input[type=text]").focus(function (){
+  $("input[type=text]").focus(function () {
     let input = /[0-9]{0,15}/;//regex pattern should allow all inputs that are numerical
-
+    //I have no idea how to implement this so it checks each time an input is entered.
   });
   // set focus to first year: messes up codepen
   // $("#loan_year01").focus();
